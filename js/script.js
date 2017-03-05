@@ -1,7 +1,6 @@
 function generatePdf()
 {
 	initDroneDeployApi()
-	//api
 	.then(getCurrentlyViewedPlan)
 	.then(getTileFromPlan)
 	.then(getTileFromResponse)
@@ -18,14 +17,11 @@ function initDroneDeployApi()
 function getCurrentlyViewedPlan(droneDeployApi)
 {
 	window.api = droneDeployApi;
-	console.log(window.api);
 	return window.api.Plans.getCurrentlyViewed();
 }
 
 function getTileFromPlan(plan)
 {
-	console.log(window.api);
-	console.log(plan);
 	return window.api.Tiles.get({planId: plan.id, layerName: 'ortho', zoom: 16});
 }
 
@@ -50,7 +46,6 @@ function postDataToServer(tiles) {
 
 function generatePDF(encodedTiles) {
   const docDefinition = generatePDFcontent(encodedTiles);
-  // decided to have client side PDF printing with the pure javascript module: pdfmake
   pdfMake.createPdf(docDefinition).open();
 }
 
