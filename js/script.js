@@ -1,3 +1,4 @@
+//button handler function
 function generatePdf()
 {
 	initDroneDeployApi()
@@ -9,28 +10,33 @@ function generatePdf()
     .catch(console.log);
 }
 
+//initialize droneDeployApi
 function initDroneDeployApi()
 {	
 	return new DroneDeploy({version: 1});
 }
 	
+//Query api for currently viewed plan
 function getCurrentlyViewedPlan(droneDeployApi)
 {
 	window.api = droneDeployApi;
 	return window.api.Plans.getCurrentlyViewed();
 }
 
+//Based on plan id query tiles api
+//hardcoded layerName and zoom
 function getTileFromPlan(plan)
 {
 	return window.api.Tiles.get({planId: plan.id, layerName: 'ortho', zoom: 16});
 }
 
+//get tile array from response
 function getTileFromResponse(res)
 {
-	console.log(res);
 	return res.tiles;
 }
 
+//send tile data to server via POST
 function postDataToServer(tiles) {
   const webServerUrl = 'https://dronedeployserver.herokuapp.com/getUrl/';
   const body = JSON.stringify({
@@ -44,6 +50,7 @@ function postDataToServer(tiles) {
     .then((rjson) => rjson.msg);
 }
 
+//using pdfmake to create pdf on client side.
 function generatePDF(encodedTiles) {
   const docDefinition = generatePDFcontent(encodedTiles);
   pdfMake.createPdf(docDefinition).open();
